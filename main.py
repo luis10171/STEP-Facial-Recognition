@@ -6,10 +6,10 @@ import random
 import pickle
 
 #Pickle File names:
-pickleFaces = 'pickleFaces.pk'
-pickleNames = 'pickleNames.pk'
-picklePatientsDict = "picklePatientsDict.pk"
-picklePatientsList = "picklePatientsList.pk"
+pickleFaces = 'pickleFaces2.pk'
+pickleNames = 'pickleNames2.pk'
+picklePatientsDict = "picklePatientsDict2.pk"
+picklePatientsList = "picklePatientsList2.pk"
 
 #Person Class:
 class Person:
@@ -34,7 +34,7 @@ class Person:
         self.data = f"User ID: {self.patientId}\nName: {self.name}\nAge: {self.age}\nDate of Birth: {self.dob}\nEmail: {self.email}\nPhone Number: {self.phone}\nAddress: {self.address}, {self.city}, {self.state} {self.zip}\nInsurance: {self.insurance}\nAllergies:"
     
     def __str__(self):
-        return self.data
+        return self.name
     
     def getFaceEncoding(self):
         self.image = face_recognition.load_image_file(f"{self.patientId}.png")
@@ -61,14 +61,7 @@ with open(picklePatientsList, 'rb') as fi:
 #Doctor Visit List
 visit = ["<1 Year", "1-2 Years", "3-4 Years", "4+ Years"]
 
-#Default Patients:
-#Luis:
-luis = Person(name="Luis Hernandez", age="15", dob="09/17/2007", email="lh10171@gmail.com", phone="631-525-1803", address="43 N Clinton Ave", city="Patchogue", state="NY", zipCode="11772", insurance="Fidelis Care", id = "3017790")
-luis.data += " None\nMedical Complications: Poor Vision\nMost Recent Medical Visit (As of 2022): <1 Year"
-patients["3017790"] = luis
-patientsList.append(luis)
-
-# Create arrays/lists of known face encodings and their names
+# Access pickle (database) files:
 with open(pickleFaces, 'rb') as fi:
     known_face_encodings = pickle.load(fi)
 
@@ -105,7 +98,7 @@ def face_cam():
             face_names = []
             for face_encoding in face_encodings:
                 # See if the face is a match for the known face(s)
-                matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                matches = face_recognition.compare_faces(known_face_encodings, face_encoding, tolerance=0.4)
                 name = "Unknown Person"
 
                 # # If a match was found in known_face_encodings, just use the first one.
@@ -162,15 +155,15 @@ sg.theme("Reddit")
 
 #Home Layout:
 home = [ 
-#logo and Title:
-[sg.Push(), sg.Image("STEP logo.png", pad=((0,0),(0,10))), sg.Push()],
-[sg.Push(), sg.Text("Medical Database and Facial Scanner", font = 'Bahnschrift 35'), sg.Push()],
-#Buffer
-[sg.Text(size=(2,2))],
-#Buttons:
-[sg.Push(), sg.Button("Upload Patient to Database", size=(25), font="Bahnschrift 25", pad=(0,10)), sg.Push()], 
-[sg.Push(), sg.Button("Live Facial Recognition", size=(25), font="Bahnschrift 25", pad=(0,10)), sg.Push()], 
-[sg.Push(), sg.Button("Access Database", size=(25), font="Bahnschrift 25", pad=(0,20)), sg.Push()],
+    #logo and Title:
+    [sg.Push(), sg.Image("STEP logo.png", pad=((0,0),(0,10))), sg.Push()],
+    [sg.Push(), sg.Text("Medical Database and Facial Scanner", font = 'Bahnschrift 35'), sg.Push()],
+    #Buffer
+    [sg.Text(size=(2,2))],
+    #Buttons:
+    [sg.Push(), sg.Button("Upload Patient to Database", size=(25), font="Bahnschrift 25", pad=(0,10)), sg.Push()], 
+    [sg.Push(), sg.Button("Live Facial Recognition", size=(25), font="Bahnschrift 25", pad=(0,10)), sg.Push()], 
+    [sg.Push(), sg.Button("Access Database", size=(25), font="Bahnschrift 25", pad=(0,20)), sg.Push()],
 ]
 #Terms and Conditions:
 terms = [
@@ -302,7 +295,7 @@ while True:
     
     #Taking Photo
     if event == "Capture":
-        for i in range(60):
+        for i in range(30):
             temp = get_image()
         camera_capture = get_image()
         userId = random.randint(1000000, 9999999)
@@ -390,7 +383,7 @@ while True:
     
     #Taking Photo
     if event == "Capture2":
-        for i in range(60):
+        for i in range(30):
             temp = get_image()
         camera_capture = get_image()
         unknownId = random.randint(1000000, 9999999)
