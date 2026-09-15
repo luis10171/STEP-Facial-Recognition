@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.png -text
+*.jpg -text
+# Preserve the recovered historical source byte-for-byte, including whitespace.
+archive/original_main.py -text -whitespace
