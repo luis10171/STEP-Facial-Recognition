@@ -1,0 +1,36 @@
+.venv/
+venv/
+.tmp/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+# Patient information, legacy databases, camera captures, and model weights
+data/
+private/
+*.db
+*.db-*
+*.sqlite*
+*.pk
+*.pkl
+*.pickle
+*.onnx
+*.download
+*.log
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.mp4
+*.avi
+!STEP logo.png
+!docs/demo-home.jpg
